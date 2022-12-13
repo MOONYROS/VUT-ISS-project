@@ -10,13 +10,16 @@ sSegSpec = np.fft.fft(s)
 G = np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
 
 peaks, _ = sp.find_peaks(sSegSpec)
+plt.plot(sSegSpec)
+plt.plot(peaks, sSegSpec[peaks], "x")
+
 maxPeak = peaks[0]
 for peak in peaks:
     if(sSegSpec[peak] > sSegSpec[maxPeak]):
         maxPeak = peak
         
-print(maxPeak)
-print(sSegSpec[maxPeak])
+print('audio/b_orig.wav max peak is:', maxPeak)
+#print(sSegSpec[maxPeak])
 f = np.arange(G.size) / N * fs
 # zobrazujeme prvni pulku spektra
 plt.figure(figsize=(15,5))
