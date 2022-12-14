@@ -28,8 +28,3 @@ plt.xlabel('$f[Hz]$')
 plt.title('Spektralni hustota vykonu [dB]')
 plt.grid(alpha=0.5, linestyle='--')
 plt.show()
-
-#peaks = sp.find_peaks(f)
-#plt.plot(f)
-#plt.plot(peaks, f[peaks], "f")
-#plt.show()
