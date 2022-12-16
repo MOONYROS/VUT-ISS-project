@@ -8,14 +8,6 @@ s, fs = sf.read('audio/a_orig.wav')
 N = s.size
 sSegSpec = np.fft.fft(s)
 G = 10 * np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
-
-#maxPeak = G[0]
-'''maxPeak = sSegSpec[0]
-ourIndex = 0
-for index, peak in enumerate(np.split(sSegSpec, 2)[0]):
-    if(np.abs(peak) > np.abs(maxPeak)):
-        maxPeak = peak
-        ourIndex = index'''
         
 i = np.argmax(abs(sSegSpec)) 
 print('audio/b_orig.wav max peak is:', fs * i / N)
