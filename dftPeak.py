@@ -4,7 +4,7 @@ import soundfile as sf
 import IPython
 import scipy.signal as sp
 
-s, fs = sf.read('audio/a_orig.wav')
+s, fs = sf.read('audio/b_orig.wav')
 N = s.size
 sSegSpec = np.fft.fft(s)
 G = 10 * np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
