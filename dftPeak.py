@@ -7,19 +7,20 @@ import scipy.signal as sp
 s, fs = sf.read('audio/a_orig.wav')
 N = s.size
 sSegSpec = np.fft.fft(s)
-G = np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
+G = 10 * np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
 
-peaks, _ = sp.find_peaks(sSegSpec)
-plt.plot(sSegSpec)
-plt.plot(peaks, sSegSpec[peaks], "x")
-
-maxPeak = peaks[0]
-for peak in peaks:
-    if(sSegSpec[peak] > sSegSpec[maxPeak]):
+#maxPeak = G[0]
+'''maxPeak = sSegSpec[0]
+ourIndex = 0
+for index, peak in enumerate(np.split(sSegSpec, 2)[0]):
+    if(np.abs(peak) > np.abs(maxPeak)):
         maxPeak = peak
+        ourIndex = index'''
         
-print('audio/b_orig.wav max peak is:', maxPeak)
+i = np.argmax(abs(sSegSpec)) 
+print('audio/b_orig.wav max peak is:', fs * i / N)
 #print(sSegSpec[maxPeak])
+#print(G.size, N, fs, G[0], sSegSpec[0], sSegSpec[ourIndex])
 f = np.arange(G.size) / N * fs
 # zobrazujeme prvni pulku spektra
 plt.figure(figsize=(15,5))

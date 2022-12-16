@@ -4,6 +4,10 @@ import scipy.signal as sp
 import matplotlib.pyplot as plt
 from IPython.display import Audio
 
+def find(condition):
+    res, = np.nonzero(np.ravel(condition))
+    return res
+
 MIDIFROM = 24
 MIDITO = 108
 SKIP_SEC = 0.35
@@ -27,12 +31,24 @@ for tone in tones:
     sampleto += Nwholetone
     # misto 's' ted pracujeme s 'x'
     N = x.size
-    sSegSpec = np.fft.fft(x)
-    G = np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
-    peaks, _ = sp.find_peaks(sSegSpec)
-    maxPeak = peaks[0]
-    for peak in peaks:
-        if(sSegSpec[peak] > sSegSpec[maxPeak]):
-            maxPeak = peak
-    print('Max Peak of midi', midiNumber, 'is:', maxPeak)
+    if midiNumber < 47:
+        # Calculate autocorrelation and throw away the negative lags
+        corr = sp.fftconvolve(x, x[::-1], mode='full')
+        corr = corr[int(len(corr)/2):]
+
+        # Find the first low point
+        d = np.diff(corr)
+        start = find(d > 0)[0]
+
+        # Find the next peak after the low point (other than 0 lag).  This bit is 
+        # not reliable, due to peaks that occur between samples.
+        peak = np.argmax(corr[start:]) + start
+        freq = Fs / peak
+    else:
+        sSegSpec = np.fft.fft(x)
+        i = np.argmax(abs(np.split(sSegSpec, 2)[0]))
+        freq = Fs * i / N 
+    print('Max Peak of midi', midiNumber, 'is:', round(freq, 1))
     midiNumber = midiNumber + 1
+
+#vypujceno z https://gist.github.com/endolith/255291/0c0dbc8995bf5c22f56a31036e3094d15bf1b783
