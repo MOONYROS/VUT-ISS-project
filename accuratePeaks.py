@@ -8,6 +8,27 @@ def find(condition):
     res, = np.nonzero(np.ravel(condition))
     return res
 
+def makeDTFT(s, fs, freq):
+    N = s.size
+    sampleTime = float(N) / fs
+    x = np.linspace(0, freq * sampleTime * 2 * np.pi, num = 24000)
+    ySin = np.sin(x)
+    yCos = np.cos(x)
+    im = np.dot(s, ySin)
+    re = np.dot(s, yCos)
+    return complex(re, im)
+
+def matchDTFT(s, fs, rawFreq, sweep):
+    maxVal = 0
+    exactFreq = rawFreq
+    for i in range(int(sweep * 2 * 10)):
+        freq = rawFreq - float(sweep) + float(i) / 10.0
+        res = np.abs(makeDTFT(s, fs, freq))
+        if res > maxVal:
+            maxVal = res
+            exactFreq = freq
+    return exactFreq
+
 MIDIFROM = 24
 MIDITO = 108
 SKIP_SEC = 0.35
@@ -48,7 +69,7 @@ for tone in tones:
         sSegSpec = np.fft.fft(x)
         i = np.argmax(abs(np.split(sSegSpec, 2)[0]))
         freq = Fs * i / N 
-    print('Max Peak of midi', midiNumber, 'is:', round(freq, 1))
+    print('FFT or corelation for midi', '{:>3}'.format(midiNumber), 'is:', '{:>6}'.format(round(freq, 1)), "Hz", "  DTFT:", '{:>6}'.format(round(matchDTFT(x, Fs, freq, 4), 1)), "Hz")
     midiNumber = midiNumber + 1
 
 #vypujceno z https://gist.github.com/endolith/255291/0c0dbc8995bf5c22f56a31036e3094d15bf1b783
