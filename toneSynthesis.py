@@ -4,46 +4,82 @@ import soundfile as sf
 import IPython
 import scipy.signal as sp
 
-def periodPrint(s, toneFreq):
+def manIFFTexp(ft):
+    N = ft.size
+    outSignal = np.zeros(N, dtype = complex)
+    x = np.linspace(0, N-1, N)
+    for i in range(int(N / 2)):
+        if i == 0:
+            outSignal += ft[i] * np.ones(N)
+        else:
+            if i == N-i:
+                outSignal += ft[i] * np.exp(1.0j*2 * np.pi * (i) * x / N)
+            else:
+                outSignal += ft[i] * np.exp(1.0j * 2 * np.pi * (i) * x / N) 
+                outSignal += ft[N-i] * np.exp(1.0j * 2 * np.pi * (N-i) * x / N)
+    outReal = outSignal.real / N
+    return outReal
+
+def manIFFTcos(ft):
+    N = ft.size
+    outSignal = np.zeros(N, dtype = complex)
+    x = np.linspace(0, N-1, N)
+    for i in range(int(N / 2)):
+        if i == 0:
+            outSignal += ft[i] * np.ones(N)
+        else:
+            if i == N-i:
+                outSignal += ft[i] * np.exp(1.0j*2 * np.pi * (i) * x / N)
+            else:
+                outSignal += ft.real[i] * np.cos(2 * np.pi * (i) * x / N) * 1.732
+                #outSignal += sSegSpec.imag[i] * np.sin(2 * np.pi * (i) * x / N) 
+                #outSignal += np.abs(sSegSpec[i]) * np.cos(2 * np.pi * (i) * x / N) 
+                outSignal += ft.real[N-i] * np.cos(2 * np.pi * (N-i) * x / N) * 1.732
+                #outSignal += sSegSpec.imag[N-i] * np.sin(2 * np.pi * (N-i) * x / N)
+                #outSignal += np.abs(sSegSpec.real[N-i]) * np.cos(2 * np.pi * (N-i) * x / N)
+    outReal = outSignal.real / N
+    return outReal
+
+def manIFFTcosLen(ft, l):
+    N = ft.size
+    outSignal = np.zeros(N*l, dtype = complex)
+    x = np.linspace(0, N*l-1, N*l)
+    for i in range(int(N / 2)):
+        if i == 0:
+            outSignal += ft[0] * np.ones(N*l)
+        else:
+            if i == N-i:
+                outSignal += ft[i] * np.exp(1.0j*2 * np.pi * (i) * x / N)
+            else:
+                outSignal += ft.real[i] * np.cos(2 * np.pi * (i) * x / N) * 1.732
+                #outSignal += sSegSpec.imag[i] * np.sin(2 * np.pi * (i) * x / N) 
+                #outSignal += np.abs(sSegSpec[i]) * np.cos(2 * np.pi * (i) * x / N) 
+                outSignal += ft.real[N-i] * np.cos(2 * np.pi * (N-i) * x / N) * 1.732
+                #outSignal += sSegSpec.imag[N-i] * np.sin(2 * np.pi * (N-i) * x / N)
+                #outSignal += np.abs(sSegSpec.real[N-i]) * np.cos(2 * np.pi * (N-i) * x / N)
+    outReal = outSignal.real / N
+    return outReal
+
+def syntTone(srcFile, dstFile, toneFreq):
+    s, fs = sf.read(srcFile)
     N = s.size
+    sSegSpec = np.fft.fft(s)
+
     period = 1 / toneFreq
-    sample = N * period * 3 * 2
+    sample = N * period * 10 * 2
     plt.figure(figsize=(10, 3))
-    graphTitle = '3 periody'
+    graphTitle = '10 period', srcFile
     plt.title(graphTitle)
     plt.plot(s[:int(sample) + 1])
+    outExp = manIFFTexp(sSegSpec)
+    plt.plot(outExp[:int(sample) + 1])
+    outCos = manIFFTcos(sSegSpec)
+    plt.plot(outCos[:int(sample) + 1])
     plt.show()
 
-s, fs = sf.read('audio/b_orig.wav')
-N = s.size
-sSegSpec = np.fft.fft(s)
+    outSec = manIFFTcosLen(sSegSpec, 2)
+    sf.write(dstFile, outSec, fs)
 
-outSignal = np.zeros(N, dtype = float)
-
-for i in range(int(N / 4) - 1):
-    sampleTime = float(N) / fs
-    h = i + 1
-    freq = 2 * h
-    x = np.linspace(0, freq * sampleTime * 2 * np.pi, num = 24000)
-    #plt.plot(outSignal)
-    ySin = np.sin(x) / float(h)
-    #plt.plot(ySin)
-    outSignal = outSignal - np.imag(sSegSpec[h]) * ySin
-    #print(h, np.real(sSegSpec[h]), np.imag(sSegSpec[h]))
-    #plt.plot(outSignal)
-    yCos = np.cos(x) / float(h)
-    #plt.plot(yCos)
-    outSignal = outSignal + np.real(sSegSpec[h]) * yCos
-    #plt.plot(outSignal)
-    #plt.show()
-
-#periodPrint(s, 660)
-#periodPrint(outSignal, 660)
-period = 1 / 660
-sample = N * period * 3 * 2
-plt.figure(figsize=(10, 3))
-graphTitle = '3 periody'
-plt.title(graphTitle)
-plt.plot(s[:int(sample) + 1])
-plt.plot(outSignal[:int(sample) + 1])
-plt.show()
+syntTone('audio/a_orig.wav', 'audio/a.wav', 82.41)
+syntTone('audio/b_orig.wav', 'audio/b.wav', 659.26)
+syntTone('audio/c_orig.wav', 'audio/c.wav', 3520.00)
