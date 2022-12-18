@@ -12,7 +12,7 @@ HOWMUCH_SEC = 0.5
 WHOLETONE_SEC = 2
 howmanytones = MIDITO - MIDIFROM + 1
 tones = np.arange(MIDIFROM, MIDITO+1)
-s, Fs = sf.read('klavir.wav')
+s, Fs = sf.read('../audio/klavir.wav')
 N = int(Fs * HOWMUCH_SEC)
 Nwholetone = int(Fs * WHOLETONE_SEC)
 xall = np.zeros((MIDITO+1, N)) # matrix with all tones - first signals empty,
@@ -27,6 +27,6 @@ for tone in tones:
     sampleto += Nwholetone
 
 # Saving my midis 40, 76, 105
-sf.write('audio/d_orig.wav', xall[40], Fs)
-sf.write('audio/e_orig.wav', xall[76], Fs)
-sf.write('audio/f_orig.wav', xall[105], Fs)
+sf.write('../audio/a_orig.wav', xall[40], Fs)
+sf.write('../audio/b_orig.wav', xall[76], Fs)
+sf.write('../audio/c_orig.wav', xall[105], Fs)

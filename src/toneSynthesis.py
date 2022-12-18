@@ -80,6 +80,6 @@ def syntTone(srcFile, dstFile, toneFreq):
     outSec = manIFFTcosLen(sSegSpec, 2)
     sf.write(dstFile, outSec, fs)
 
-syntTone('audio/a_orig.wav', 'audio/a.wav', 82.41)
-syntTone('audio/b_orig.wav', 'audio/b.wav', 659.26)
-syntTone('audio/c_orig.wav', 'audio/c.wav', 3520.00)
+syntTone('../audio/a_orig.wav', '../audio/a.wav', 82.41)
+syntTone('../audio/b_orig.wav', '../audio/b.wav', 659.26)
+syntTone('../audio/c_orig.wav', '../audio/c.wav', 3520.00)

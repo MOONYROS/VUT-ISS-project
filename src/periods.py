@@ -16,6 +16,6 @@ def periodPrint(fileName, toneFreq):
     plt.plot(s[:int(sample) + 1])
     plt.show()
 
-periodPrint("audio/a_orig.wav", 82.41)
-periodPrint("audio/b_orig.wav", 659.26)
-periodPrint("audio/c_orig.wav", 3520.00)
+periodPrint("../audio/a_orig.wav", 82.41)
+periodPrint("../audio/b_orig.wav", 659.26)
+periodPrint("../audio/c_orig.wav", 3520.00)

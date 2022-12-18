@@ -17,6 +17,6 @@ def spectrumPrint(fileName):
     plt.title(graphTitle)
     plt.show()
 
-spectrumPrint('audio/a_orig.wav')
-spectrumPrint('audio/b_orig.wav')
-spectrumPrint('audio/c_orig.wav')
+spectrumPrint('../audio/a_orig.wav')
+spectrumPrint('../audio/b_orig.wav')
+spectrumPrint('../audio/c_orig.wav')

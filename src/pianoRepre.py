@@ -71,6 +71,6 @@ def pianoRepre(fileName):
 
     plt.show()
 
-pianoRepre("audio/a_orig.wav")
-pianoRepre("audio/b_orig.wav")
-pianoRepre("audio/c_orig.wav")
+pianoRepre("../audio/a_orig.wav")
+pianoRepre("../audio/b_orig.wav")
+pianoRepre("../audio/c_orig.wav")

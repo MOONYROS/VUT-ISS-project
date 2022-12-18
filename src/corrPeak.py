@@ -8,7 +8,7 @@ def find(condition):
     res, = np.nonzero(np.ravel(condition))
     return res
 
-s, fs = sf.read('audio/a_orig.wav')
+s, fs = sf.read('../audio/a_orig.wav')
 N = s.size
 sSegSpec = np.fft.fft(s)
 G = 10 * np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
@@ -25,7 +25,7 @@ start = find(d > 0)[0]
 # not reliable, due to peaks that occur between samples.
 peak = np.argmax(corr[start:]) + start
 
-print('audio/b_orig.wav max peak is:', fs / peak)
+print('../audio/a_orig.wav max peak is:', fs / peak)
 f = np.arange(G.size) / N * fs
 plt.figure(figsize=(15,5))
 plt.plot(f[:f.size//2+1], G[:G.size//2+1])

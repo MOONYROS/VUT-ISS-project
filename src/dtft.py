@@ -26,6 +26,6 @@ def matchDTFT(s, fs, rawFreq, sweep):
     return exactFreq
 
 
-s, fs = sf.read('audio/c_orig.wav')
+s, fs = sf.read('../audio/c_orig.wav')
 rawFreq = 3519
 print("EXACT FREQUENCY:", matchDTFT(s, fs, rawFreq, 5))

@@ -4,7 +4,7 @@ import soundfile as sf
 import IPython
 import scipy.signal as sp
 
-s, fs = sf.read('audio/82Hz.wav')
+s, fs = sf.read('../audio/b_orig.wav')
 N = s.size
 sSegSpec = np.fft.fft(s)
 G = 10 * np.log10(1/N * np.abs(sSegSpec)**2 + 10e-5)
@@ -16,7 +16,7 @@ plt.plot(sSegSpec)
 plt.show()
 
 i = np.argmax(abs(sSegSpec)) 
-print('audio/b_orig.wav max peak is:', fs * i / N)
+print('../audio/b_orig.wav max peak is:', fs * i / N)
 #print(sSegSpec[maxPeak])
 #print(G.size, N, fs, G[0], sSegSpec[0], sSegSpec[ourIndex])
 f = np.arange(G.size) / N * fs
