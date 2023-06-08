@@ -1,6 +1,6 @@
 # VUT-ISS-project (2022/2023)
 
-Main goal of this project was to create graphs (for Fourier transformation, etc.) and to create a song using using `python` and a single `.waw` file. So that meant splitting the sounds as midis, storing them and then being able to recreate the song using included text file to recognize midi sounds.
+Main goal of this project was to create graphs (for Fourier transformation, etc.) and to create a song using `python` and a single `.waw` file. That meant splitting the sounds as MIDIs, storing them and then being able to recreate the song using included text file to recognize midi sounds.
 
 ## How to run it
 
